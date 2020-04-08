@@ -1,0 +1,38 @@
+Package: ShortRateModel
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.1.0
+Author: Who wrote it
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports: DEoptimR, nloptr, rootSolve, RQuantLib
+Depends: lubridate, parallel
+Collate:
+    generic_functions.R
+    value_date.R
+    pricing_day_count.R
+    calibration_setting.R
+    set_tenor_convertor.R
+    set_date_sequence.R
+    set_year_fraction.R
+    virtual_quote.R
+    market_rate.R
+    virtual_quote_term_structure.R
+    market_rate_term_structure.R
+    virtual_parametric_model.R
+    virtual_zero_rate_term_structure.R
+    nelson_siegel.R
+    svensson.R
+    zero_rate_point.R
+    virtual_nonparametric_time_dependent_short_rate.R
+    piecewise_flat_term_structure.R
+    piecewise_linear_term_structure.R
+    virtual_affine_model.R
+    virtual_equilibrium_model.R
+    gaussian_model.R
+    cir.R
+

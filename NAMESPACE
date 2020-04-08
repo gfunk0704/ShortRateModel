@@ -1,0 +1,22 @@
+exportPattern("^[[:alpha:]]+")
+
+#DEoptimR
+importFrom(DEoptimR,
+           JDEoptim)
+
+#nloptr
+importFrom(nloptr,
+           cobyla,
+           lbfgs,
+           nl.opts)
+
+#rootSolve
+importFrom(rootSolve,
+           multiroot)
+
+#RQuantLib
+importFrom(RQuantLib,
+           isBusinessDay,
+           isEndOfMonth,
+           isHoliday,
+           yearFraction)

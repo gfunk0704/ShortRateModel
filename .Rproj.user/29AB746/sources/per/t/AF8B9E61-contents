@@ -1,0 +1,14 @@
+require("ShortRateModel")
+
+SetValueDate("20200107")
+SetPricingDayCount("ACT365F")
+CalibrationSetting(optimizationStrategy = 1L)
+set.seed(as.numeric(ValueDate()))
+
+calendar                <- "HongKong"
+marketRateTermStructure <- MarketRateTermStructureFromCsv(file     = "cny_term_structure.csv",
+                                                          calendar = calendar,
+                                                          unit     = "percentage")
+
+model <- Calibrate(marketData = marketRateTermStructure,
+                   model      = InitializeCir())
