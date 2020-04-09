@@ -24,7 +24,6 @@ Collate:
     virtual_quote_term_structure.R
     market_rate_term_structure.R
     virtual_parametric_model.R
-    virtual_nonparametric_time_dependent_short_rate.R
     virtual_affine_model.R
     virtual_equilibrium_model.R
     gaussian_model.R
