@@ -1,0 +1,130 @@
+setClass(
+    Class          = "INonparametricCurve",
+    contains       = "ICurve",
+    representation = representation(
+        time  = "numeric",
+        value = "numeric",
+        "VIRTUAL"
+    ),
+    prototype      = prototype(
+        time  = numeric(0),
+        value = numeric(0)
+    )
+)
+
+setMethod(
+    f          = "Calibrate",
+    signature  = signature(marketData = "MarketRateTermStructure",
+                           model      = "INonparametricCurve"),
+    definition = function(marketData, model) {
+        instrumentCashflowList <- .InstrumentCashflowList(marketData)
+        firstCashflow          <- instrumentCashflowList[[1]]
+        model@time             <- tail(firstCashflow[["time"]], 1)
+        model@value            <- log(tail(firstCashflow[["cashflow"]], 1)) /  model@time
+
+        for (singleCashflow in instrumentCashflowList[-1]) {
+
+            time     <- singleCashflow[["time"]]
+            maturity <- tail(time, 1)
+            cashflow <- singleCashflow[["cashflow"]]
+            value    <- uniroot(f        = function(guess) {
+                                    Data(model) <- Point(time  = maturity,
+                                                         value = guess)
+                                    sum(cashflow * exp(-SetIntegration(model)(time)))
+                                },
+                                interval = c(-1, 1))[["root"]]
+
+            Data(model) <- Point(time  = maturity,
+                                 value = value)
+
+        }
+
+        model
+    }
+)
+
+setMethod(
+    f          = "Data<-",
+    signature  = signature(object = "INonparametricCurve",
+                           value  = "Point"),
+    definition = function(object, value) {
+        object@time  <- c(object@time, value@time)
+        object@value <- c(object@value, value@value)
+        object
+    }
+)
+
+.SetCurve <- function(SetInterpolation) {
+    function(curve) {
+        time          <- curve@time
+        lhsTime       <- time[1]
+        rhsTime       <- tail(time, 1)
+        value         <- curve@value
+        lhsValue      <- value[1]
+        rhsValue      <- tail(value, 1)
+        Interpolation <- SetInterpolation(time, value)
+
+        function(tau) {
+            beforeLhs <- tau <= lhsTime
+            afterRhs  <- tau >= rhsTime
+            inRange   <- !(beforeLhs | afterRhs)
+            valueHat  <- numeric(length(tau))
+
+            valueHat[beforeLhs] <- lhsValue
+            valueHat[afterRhs]  <- rhsValue
+
+            if (any(inRange)) {
+                rhsPos <- vapply(X         = tau[inRange],
+                                 FUN       = function(singleTau) which.max(time >= singleTau),
+                                 FUN.VALUE = integer(1))
+                valueHat[inRange] <- Interpolation(tau[inRange], rhsPos)
+            }
+
+            valueHat
+        }
+    }
+}
+
+.SetIntegration <- function(IntegrationDetial) {
+    function(curve) {
+        time            <- curve@time
+        value           <- curve@value
+        lhsTime         <- time[1]
+        rhsTime         <- tail(time, 1)
+        lhsValue        <- value[1]
+        rhsValue        <- tail(value, 1)
+        intDetial       <- IntegrationDetial(time, value)
+        InRangeIntegral <- intDetial[["InRangeIntegral"]]
+        rhsIntegration  <- intDetial[["rhsIntegration"]]
+
+        function(tau) {
+            beforeLhs   <- tau <= lhsTime
+            afterRhs    <- tau >= rhsTime
+            inRange     <- !(beforeLhs | afterRhs)
+            integration <- numeric(length(tau))
+
+            if (any(beforeLhs)) {
+                integration[beforeLhs] <- lhsValue * tau[beforeLhs]
+            }
+
+            if (any(afterRhs)) {
+                integration[afterRhs] <- rhsValue * (tau[afterRhs] - rhsTime) + rhsIntegration
+            }
+
+            if (any(inRange)) {
+                rhsPos <- vapply(X         = tau[inRange],
+                                 FUN       = function(tau) which.max(time >= tau),
+                                 FUN.VALUE = integer(1))
+                lhsPos <- rhsPos - 1
+
+                integration[inRange] <- InRangeIntegral(tau[inRange], lhsPos, rhsPos)
+            }
+
+            integration
+        }
+    }
+}
+
+
+
+

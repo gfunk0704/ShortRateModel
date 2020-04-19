@@ -25,3 +25,4 @@ setGeneric(
         standardGeneric(".FittingChart")
     }
 )
+

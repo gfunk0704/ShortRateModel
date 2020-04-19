@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1587305018103.000,
+    "dirty" : false,
+    "encoding" : "CP950",
+    "folds" : "",
+    "hash" : "1835218363",
+    "id" : "8C41B5C0",
+    "lastKnownWriteTime" : 1587305075,
+    "last_content_update" : 1587305075821,
+    "path" : "D:/github/ShortRateModel/R/virtual_nonparametric_curve.R",
+    "project_path" : "R/virtual_nonparametric_curve.R",
+    "properties" : {
+        "cursorPosition" : "39,9",
+        "scrollLine" : "38",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

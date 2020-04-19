@@ -12,3 +12,6 @@ marketRateTermStructure <- MarketRateTermStructureFromCsv(file     = "cny_term_s
 
 model <- Calibrate(marketData = marketRateTermStructure,
                    model      = InitializeCir())
+
+marketInstForwardRate <- Calibrate(marketData = marketRateTermStructure,
+                                   model      = MarketImpliedInstantaneousForwardRate(PiecewiseLinear()))

@@ -28,4 +28,12 @@ Collate:
     virtual_equilibrium_model.R
     gaussian_model.R
     cir.R
+    virtual_curve.R
+    point.R
+    virtual_nonparametric_curve.R
+    piecewise_flat.R
+    piecewise_linear.R
+    market_implied_instantaneous_forward_rate.R
+    simple_term_structure_model.R
+    
 

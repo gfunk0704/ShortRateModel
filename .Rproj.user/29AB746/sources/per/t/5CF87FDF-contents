@@ -1,0 +1,85 @@
+setClass(
+    Class          = "MarketImpliedInstantaneousForwardRate",
+    representation = representation(
+        curveModel    = "ICurve"
+    )
+)
+
+MarketImpliedInstantaneousForwardRate <- function(curveModel) {
+    new(Class      = "MarketImpliedInstantaneousForwardRate",
+        curveModel = curveModel)
+}
+
+setMethod(
+    f          = "Calibrate",
+    signature  = signature(marketData = "MarketRateTermStructure",
+                           model      = "MarketImpliedInstantaneousForwardRate"),
+    definition = function(marketData, model) {
+        model@curveModel <- Calibrate(marketData, model@curveModel)
+        if (FittingChart()) {
+            .FittingChart(marketData, model)
+        }
+        model
+    }
+)
+
+setGeneric(
+    name = "CurveModel",
+    def  = function(termStructure) {
+        standardGeneric("CurveModel")
+    }
+)
+
+setMethod(
+    f          = "CurveModel",
+    signature  = signature(termStructure = "MarketImpliedInstantaneousForwardRate"),
+    definition = function(termStructure) termStructure@curveModel
+)
+
+setGeneric(
+    name = "SetMarketInstantaneousForwardRate",
+    def  = function(termStructure) {
+        standardGeneric("SetMarketInstantaneousForwardRate")
+    }
+)
+
+setMethod(
+    f          = "SetMarketInstantaneousForwardRate",
+    signature  = signature(termStructure = "MarketImpliedInstantaneousForwardRate"),
+    definition = function(termStructure) {
+        Curve <- SetCurve(termStructure@curveModel)
+        function(maturity) Curve(maturity)
+    }
+)
+
+setGeneric(
+    name = "SetMarketZcbPrice",
+    def  = function(termStructure) {
+        standardGeneric("SetMarketZcbPrice")
+    }
+)
+
+setMethod(
+    f          = "SetMarketZcbPrice",
+    signature  = signature(termStructure = "MarketImpliedInstantaneousForwardRate"),
+    definition = function(termStructure) {
+        Integration <- SetIntegration(termStructure@curveModel)
+        function(maturity) exp(-Integration(maturity))
+    }
+)
+
+setGeneric(
+    name = "SetMarketZeroRate",
+    def  = function(termStructure) {
+        standardGeneric("SetMarketZeroRate")
+    }
+)
+
+setMethod(
+    f          = "SetMarketZeroRate",
+    signature  = signature(termStructure = "MarketImpliedInstantaneousForwardRate"),
+    definition = function(termStructure) {
+        Integration <- SetIntegration(termStructure@curveModel)
+        function(maturity) -Integration(maturity) / maturity
+    }
+)

@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1587305084131.000,
+    "dirty" : false,
+    "encoding" : "CP950",
+    "folds" : "",
+    "hash" : "865446008",
+    "id" : "5CF87FDF",
+    "lastKnownWriteTime" : 1587305089,
+    "last_content_update" : 1587305089036,
+    "path" : "D:/github/ShortRateModel/R/market_implied_instantaneous_forward_rate.R",
+    "project_path" : "R/market_implied_instantaneous_forward_rate.R",
+    "properties" : {
+        "cursorPosition" : "20,9",
+        "scrollLine" : "13",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

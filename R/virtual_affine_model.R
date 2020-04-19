@@ -37,14 +37,6 @@ setMethod(
     }
 )
 
-
-setGeneric(
-    name = "SetZcbClosedForm",
-    def  = function(model) {
-        standardGeneric("SetZcbClosedForm")
-    }
-)
-
 .CreateAffineModelZcbClosedForm <- function(SetA, SetB) {
     function(model) {
         A            <- SetA(model)
@@ -59,6 +51,13 @@ setGeneric(
         }
     }
 }
+
+setGeneric(
+    name = "SetZcbClosedForm",
+    def  = function(model) {
+        standardGeneric("SetZcbClosedForm")
+    }
+)
 
 setMethod(
     f          = "SetZcbClosedForm",
